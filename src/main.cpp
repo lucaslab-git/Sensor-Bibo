@@ -19,7 +19,6 @@
 #define S6LP A14
 #define S7LP A15
 
-
 int S0R =  0;
 int S1R =  0;
 int S2R =  0;
@@ -39,13 +38,52 @@ int S6L =  0;
 int S7L =  0;
 
 int steering = 0;
-int schwarz;
+int schwarz = 0;
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
+  delay(1000);
+  S0L = analogRead(S0LP);
+  schwarz = S0L - 2;
+  Serial.println(schwarz);
+  delay(500);
 }
 
-void loop() {
+int steering_value(){
+
+  get_value();
+
+  if(S0R >= schwarz) {steering = 6;}
+  else if(S1R >= schwarz) {steering = 5;}
+  else if(S2R >= schwarz) {steering = 4;}
+  else if(S3R >= schwarz) {steering = 3;}
+  else if(S4R >= schwarz) {steering = 2;}
+  else if(S5R >= schwarz) {steering = 1;}
+
+  else if(S7L >= schwarz) {steering = -6;}
+  else if(S6L >= schwarz) {steering = -5;}
+  else if(S5L >= schwarz) {steering = -4;}
+  else if(S4L >= schwarz) {steering = -3;}
+  else if(S3L >= schwarz) {steering = -2;}
+  else if(S2L >= schwarz) {steering = -1;}
+  else {steering = 0;}
+  
+  return steering;
+}
+
+void Green_left(){
+  //Code-Abfrgage, True oder False output
+}
+
+void Green_right(){
+  //Code-Abfrgage, True oder False output
+}
+
+void Obstacle(){
+  //Code-Abfrgage, True oder False output
+}
+
+void get_value() {
   S0R = analogRead(S0RP);
   S1R = analogRead(S1RP);
   S2R = analogRead(S2RP);
@@ -63,32 +101,4 @@ void loop() {
   S5L = analogRead(S5LP);
   S6L = analogRead(S6LP);
   S7L = analogRead(S7LP);
-}
-
-void steering_value(){
-  if(S0R >= schwarz) {steering = steering - 1;}
-  if(S1R >= schwarz) {steering = steering - 1;}
-  if(S2R >= schwarz) {steering = steering - 1;}
-  if(S3R >= schwarz) {steering = steering - 1;}
-  if(S4R >= schwarz) {steering = steering - 1;}
-  if(S5R >= schwarz) {steering = steering - 1;}
-
-  if(S2L >= schwarz) {steering = steering + 1;}
-  if(S3L >= schwarz) {steering = steering + 1;}
-  if(S4L >= schwarz) {steering = steering + 1;}
-  if(S5L >= schwarz) {steering = steering + 1;}
-  if(S6L >= schwarz) {steering = steering + 1;}
-  if(S7L >= schwarz) {steering = steering + 1;}
-}
-
-void Green_left(){
-  //Code-Abfrgage, True oder False output
-}
-
-void Green_right(){
-  //Code-Abfrgage, True oder False output
-}
-
-void Obstacle(){
-  //Code-Abfrgage, True oder False output
 }
